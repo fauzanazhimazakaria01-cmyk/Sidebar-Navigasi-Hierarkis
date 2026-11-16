@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manajemen Proyek & Dokumen - Portal PT M2 & M4</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- KOMPONEN 1: HEADER & TOP NAVIGATION -->
+  <header class="app-header">
+    <div class="header-left">
+      <button id="menuToggle" class="btn-icon" aria-label="Buka atau tutup menu navigasi">
+        ☰
+      </button>
+      <div class="brand-logo">
+        <span class="logo-badge">M2/M4</span>
+        <h1>Portal Operasional</h1>
+      </div>
+    </div>
+
+    <div class="header-search">
+      <label for="searchInput" class="sr-only">Cari dokumen</label>
+      <input type="search" id="searchInput" placeholder="Cari dokumen fungsional atau PIC...">
+    </div>
+
+    <div class="header-profile">
+      <span class="role-badge">Role: PT M2</span>
+      <span class="user-name">Admin Proyek</span>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <!-- KOMPONEN 2: SIDEBAR NAVIGASI HIERARKIS -->
+    <aside id="sidebar" class="app-sidebar" aria-label="Navigasi Utama">
+      <nav>
+        <ul class="nav-tree">
+          <li class="nav-item">
+            <a href="#dashboard" class="nav-link">Dashboard Utama</a>
+          </li>
+          <li class="nav-item active-group">
+            <span class="nav-group-title">[Modul 1] Manajemen Kerja PT M2</span>
+            <ul class="nav-sublist">
+              <li><a href="#proyek" class="nav-link">Ringkasan Proyek Aktif</a></li>
+              <li><a href="#dokumen" class="nav-link active" aria-current="page">Repositori Dokumen</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <span class="nav-group-title">[Modul 2] Sistem Fungsional PT M4</span>
+            <ul class="nav-sublist">
+              <li><a href="#input-m4" class="nav-link">Input Data Operasional</a></li>
+              <li><a href="#log-m4" class="nav-link">Pelacakan Status & Log</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <span class="nav-group-title">[Modul 3] Kontrol Admin & Audit</span>
+            <ul class="nav-sublist">
+              <li><a href="#akses" class="nav-link">Manajemen Hak Akses</a></li>
+              <li><a href="#laporan" class="nav-link">Ekspor Laporan & Kepatuhan</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- AREA KONTEN UTAMA (12-COLUMN GRID SYSTEM) -->
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <nav aria-label="Breadcrumb" class="breadcrumb">
+            <span>Home</span> / <span>Manajemen Kerja PT M2</span> / <strong>Repositori Dokumen</strong>
+          </nav>
+          <h2>Repositori Dokumen Fungsional</h2>
+        </div>
+        <div class="stats-pill">
+          Total Dokumen: <strong id="docCounter">3</strong>
+        </div>
+      </div>
+
+      <!-- KOMPONEN 3: KARTU RINGKASAN METRIK (KPI CARDS) -->
+      <section class="kpi-grid" aria-label="Ringkasan Status Dokumen">
+        <article class="card kpi-card">
+          <h3>Dokumen Disetujui</h3>
+          <p class="kpi-value text-success" id="approvedCount">1</p>
+          <span class="kpi-desc">Terverifikasi oleh sistem M4</span>
+        </article>
+        <article class="card kpi-card">
+          <h3>Menunggu Review</h3>
+          <p class="kpi-value text-warning" id="reviewCount">2</p>
+          <span class="kpi-desc">Perlu validasi teknis</span>
+        </article>
+        <article class="card kpi-card">
+          <h3>Kepatuhan SLA</h3>
+          <p class="kpi-value text-primary">98.5%</p>
+          <span class="kpi-desc">Target operasional bulanan</span>
+        </article>
+      </section>
+
+      <!-- SPLIT-VIEW WORKSPACE -->
+      <div class="workspace-grid">
+        <!-- KOMPONEN 4: FORM UNGGAH DOKUMEN (DENGAN VALIDASI) -->
+        <section class="card form-section" aria-labelledby="formHeading">
+          <h3 id="formHeading">+ Unggah Dokumen Baru</h3>
+          <form id="docForm" novalidate>
+            <div class="form-group">
+              <label for="docTitle">Nama Dokumen *</label>
+              <input type="text" id="docTitle" name="docTitle" placeholder="Contoh: Spesifikasi API M4 v2.0" required>
+              <small class="error-msg" id="titleError"></small>
+            </div>
+
+            <div class="form-group">
+              <label for="docPic">PIC (Penanggung Jawab PT M2) *</label>
+              <input type="text" id="docPic" name="docPic" placeholder="Nama lengkap PIC" required>
+              <small class="error-msg" id="picError"></small>
+            </div>
+
+            <div class="form-group">
+              <label for="docCategory">Kategori Modul *</label>
+              <select id="docCategory" name="docCategory" required>
+                <option value="">-- Pilih Kategori --</option>
+                <option value="Fungsional M2">Kebutuhan Fungsional (PT M2)</option>
+                <option value="Operasional M4">Integrasi Sistem (PT M4)</option>
+                <option value="Audit">Kepatuhan & Audit</option>
+              </select>
+              <small class="error-msg" id="categoryError"></small>
+            </div>
+
+            <button type="submit" class="btn-primary">Simpan ke Repositori</button>
+          </form>
+        </section>
+
+        <!-- KOMPONEN 5: TABEL REPOSITORI INTERAKTIF -->
+        <section class="card table-section" aria-labelledby="tableHeading">
+          <div class="table-header">
+            <h3 id="tableHeading">Daftar Berkas Aktif</h3>
+            <select id="statusFilter" aria-label="Filter berdasarkan status">
+              <option value="ALL">Semua Status</option>
+              <option value="Approved">Approved</option>
+              <option value="Review">Review</option>
+            </select>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Nama Dokumen</th>
+                  <th>Kategori</th>
+                  <th>PIC</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="docTableBody">
+                <!-- Diisi secara dinamis melalui script.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- KOMPONEN 6: FOOTER -->
+  <footer class="app-footer">
+    <p>&copy; 2026 Sistem Informasi Terpadu PT M2 &amp; PT M4. Seluruh hak cipta dilindungi.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+      </html>
+      
